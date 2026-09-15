@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panda Mobile UX Case Study 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#faf9f7;
+    --cream-2:#f2efe9;
+    --ink:#26221f;
+    --ink-soft:#5c554e;
+    --rose:#B8737E;
+    --rose-deep:#8f4f5a;
+    --rose-pale:#f1e2e4;
+    --line:#e4ddd3;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 28px;}
+
+  /* ---------- Masthead ---------- */
+  .masthead{
+    padding:96px 0 64px;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--rose-deep);
+    font-weight:600;
+    margin-bottom:22px;
+  }
+  h1.title{
+    font-family:'Inter',sans-serif;
+    font-weight:800;
+    font-size:clamp(24px,3.2vw,32px);
+    line-height:1.25;
+    margin:0 0 14px;
+    letter-spacing:-0.01em;
+  }
+  h1.title em{
+    font-style:normal;
+    color:var(--rose-deep);
+  }
+  .subtitle{
+    font-size:18px;
+    color:var(--ink-soft);
+    max-width:640px;
+    margin:0 0 34px;
+  }
+  .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px 28px;
+    font-size:15px;
+    color:var(--ink-soft);
+    padding-top:24px;
+    border-top:1px solid var(--line);
+  }
+  .meta-row div span{
+    display:block;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:#a49c90;
+    margin-bottom:4px;
+  }
+
+  /* ---------- TOC top bar ---------- */
+  body{padding-top:46px;}
+  .case-topnav{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:110;
+    height:40px;
+    background:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+  }
+  .case-topnav a{
+    font-family:'Inter',sans-serif;
+    font-size:12.5px;
+    font-weight:600;
+    color:rgba(255,255,255,0.85);
+    text-decoration:none;
+    white-space:nowrap;
+    transition:color .15s ease;
+  }
+  .case-topnav a:hover{color:#fff;}
+  .case-topnav .case-topnav-next{color:var(--rose);}
+  .case-topnav .case-topnav-next:hover{color:#fff;}
+
+  .case-bottomnav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+    margin:8px 0 0;
+    padding:32px 0 0;
+    border-top:1px solid var(--line);
+  }
+  .case-bottomnav a{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    font-weight:700;
+    text-decoration:none;
+    padding:12px 22px;
+    border-radius:100px;
+    transition:all .15s ease;
+  }
+  .case-bottomnav .back-link{
+    color:var(--ink-soft);
+    border:1.5px solid var(--line);
+  }
+  .case-bottomnav .back-link:hover{border-color:var(--rose);color:var(--rose-deep);}
+  .case-bottomnav .next-link{
+    background:var(--rose-deep);
+    color:#fff;
+    margin-left:auto;
+  }
+  .case-bottomnav .next-link:hover{background:var(--ink);}
+
+  .toc-topbar{
+    position:fixed;
+    top:40px;left:0;right:0;
+    z-index:100;
+    background:var(--rose-deep);
+    border-bottom:1px solid var(--rose-deep);
+  }
+  .toc-topbar nav{
+    max-width:900px;
+    margin:0 auto;
+    height:46px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:0 20px;
+    overflow-x:auto;
+    white-space:nowrap;
+    scrollbar-width:none;
+  }
+  .toc-topbar nav::-webkit-scrollbar{display:none;}
+  .toc-link{
+    font-family:'Inter',sans-serif;
+    font-size:12.5px;
+    font-weight:600;
+    color:rgba(255,255,255,0.85);
+    text-decoration:none;
+    white-space:nowrap;
+    flex-shrink:0;
+    padding:5px 11px;
+    border-radius:14px;
+    transition:all .15s ease;
+  }
+  .toc-link:hover{color:#fff;}
+  .toc-link.active{color:var(--rose-deep);background:var(--cream);font-weight:700;}
+  .toc-arrow{color:rgba(255,255,255,0.5);font-size:12px;flex-shrink:0;}
+
+  /* ---------- Sections ---------- */
+  section{padding:64px 0;border-bottom:1px solid var(--line);position:relative;}
+  section:last-of-type{border-bottom:none;}
+  section:nth-of-type(even)::before{
+    content:"";
+    position:absolute;
+    top:0;bottom:0;
+    left:50%;
+    width:100vw;
+    transform:translateX(-50%);
+    background:var(--cream-2);
+    z-index:-1;
+  }
+  .section-label{
+    font-size:17px;
+    letter-spacing:.01em;
+    text-transform:none;
+    color:var(--rose-deep);
+    font-weight:700;
+    margin-bottom:14px;
+  }
+  h2{
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:clamp(18px,2vw,20px);
+    margin:0 0 20px;
+    line-height:1.35;
+    letter-spacing:-0.005em;
+  }
+  p{margin:0 0 16px;color:var(--ink);}
+  p.lede{font-size:17px;color:var(--ink-soft);}
+  p.lede em{font-style:italic;color:var(--rose-deep);font-weight:600;}
+  p.lede em.plain-em{color:inherit;font-weight:inherit;}
+
+  /* ---------- Numbered beats ---------- */
+  .num-block{
+    display:flex;
+    gap:24px;
+    margin:48px 0;
+  }
+  .num-block:first-of-type{margin-top:8px;}
+  .num-digit{
+    font-size:15px;
+    font-weight:700;
+    color:var(--rose-deep);
+    flex-shrink:0;
+    padding-top:2px;
+  }
+  .num-content{flex:1;min-width:0;}
+  .num-title{
+    font-size:16px;
+    font-weight:700;
+    color:var(--ink);
+    margin-bottom:10px;
+  }
+  .num-content p{margin-bottom:12px;}
+  .num-content p:last-child{margin-bottom:0;}
+
+  /* ---------- Pull quote ---------- */
+  .quote-card{
+    background:var(--cream-2);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:22px 24px;
+    margin:24px 0 28px;
+  }
+  .quote-card p{
+    font-family:'Inter',sans-serif;
+    font-style:normal;
+    font-weight:500;
+    font-size:17px;
+    line-height:1.5;
+    color:var(--ink);
+    padding-left:16px;
+    border-left:2px solid var(--rose);
+    margin:0 0 14px;
+  }
+  .quote-card p:last-of-type{margin-bottom:0;}
+  .quote-attr{
+    font-family:'Inter',sans-serif;
+    font-style:normal;
+    font-size:14px;
+    letter-spacing:.02em;
+    color:var(--ink-soft);
+    margin-top:10px;
+    display:block;
+  }
+
+  /* ---------- Big number ---------- */
+  .stat-block{
+    text-align:center;
+    padding:40px 20px;
+    margin:24px 0;
+  }
+  .stat-num{
+    font-family:'Inter',sans-serif;
+    font-weight:800;
+    font-size:clamp(52px,9vw,80px);
+    color:var(--rose-deep);
+    line-height:1;
+    letter-spacing:-0.03em;
+  }
+  .stat-label{
+    font-size:14px;
+    color:var(--ink-soft);
+    margin-top:10px;
+  }
+
+  /* ---------- Plain bulleted list ---------- */
+  .plain-list{
+    margin:14px 0 0;
+    padding-left:20px;
+  }
+  .plain-list li{
+    margin-bottom:12px;
+    font-size:16px;
+    color:var(--ink);
+  }
+  .plain-list li:last-child{margin-bottom:0;}
+  .plain-list li strong{color:var(--rose-deep);}
+  .plain-list li em{font-style:italic;color:var(--ink-soft);}
+  .sub-list{margin:10px 0 0;padding-left:20px;}
+  .sub-list li{margin-bottom:8px;font-size:15px;color:var(--ink);}
+  .sub-list li:last-child{margin-bottom:0;}
+  .sub-list li strong{color:var(--rose-deep);}
+  .sub-list li em{font-style:italic;color:var(--ink-soft);}
+
+  /* ---------- Image grid + doc thumbnail ---------- */
+  .img-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin:20px 0 28px;
+  }
+  .img-grid .img-frame{margin:0;}
+  @media (max-width:560px){.img-grid{grid-template-columns:1fr;}}
+  .doc-thumb{height:210px;}
+  .doc-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:top;
+    background:var(--cream-2);
+    border:1px solid var(--line);
+    border-radius:4px;
+    display:block;
+  }
+
+  /* ---------- Before/after caption ---------- */
+  .ba-caption{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:8px;
+  }
+  .ba-caption strong{color:var(--ink);}
+
+  /* ---------- Image zoom ---------- */
+  .img-zoom-wrap{position:relative;display:inline-block;}
+  .img-zoom-wrap.block{display:block;}
+  .zoom-btn{
+    position:absolute;
+    top:8px;
+    right:8px;
+    width:28px;
+    height:28px;
+    border:none;
+    border-radius:4px;
+    background:rgba(38,34,31,0.6);
+    color:#fff;
+    font-size:14px;
+    line-height:1;
+    cursor:pointer;
+    opacity:0;
+    transition:opacity .15s ease;
+  }
+  .img-zoom-wrap:hover .zoom-btn,
+  .img-zoom-wrap:focus-within .zoom-btn{opacity:1;}
+  @media (hover:none){ .zoom-btn{opacity:1;} }
+  #lightbox-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(38,34,31,0.92);
+    z-index:999;
+    align-items:center;
+    justify-content:center;
+    padding:48px;
+    cursor:zoom-out;
+  }
+  #lightbox-overlay.active{display:flex;}
+  #lightbox-overlay img{
+    max-width:100%;
+    max-height:100%;
+    border-radius:4px;
+    cursor:zoom-in;
+  }
+  #lightbox-overlay.zoomed{
+    overflow:auto;
+    align-items:flex-start;
+    justify-content:flex-start;
+    cursor:auto;
+  }
+  #lightbox-overlay.zoomed img{
+    max-width:none;
+    max-height:none;
+    cursor:zoom-out;
+  }
+  .lightbox-nav-btn{
+    display:none;
+    align-items:center;
+    justify-content:center;
+    width:44px;
+    height:44px;
+    flex-shrink:0;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,0.12);
+    color:#fff;
+    font-size:22px;
+    cursor:pointer;
+    margin:0 20px;
+  }
+  .lightbox-nav-btn:hover{background:rgba(255,255,255,0.24);}
+  #lightbox-counter{
+    display:none;
+    position:absolute;
+    bottom:24px;
+    left:0;
+    right:0;
+    text-align:center;
+    color:#fff;
+    font-size:13px;
+    letter-spacing:.04em;
+  }
+
+  /* ---------- Funnel example (scrollable/click-through image box) ---------- */
+  .funnel-box{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    border:1px solid var(--line);
+    border-radius:4px;
+    overflow:hidden;
+    background:#fff;
+  }
+  .funnel-box.is-scroll{
+    overflow-y:auto;
+    scrollbar-color:var(--rose) var(--cream-2);
+    scrollbar-width:thin;
+  }
+  .funnel-box:not(.is-scroll) img{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;display:block;cursor:pointer;
+  }
+  .funnel-box.is-scroll img{display:block;width:100%;height:auto;}
+  .funnel-zoom-btn{
+    position:absolute;top:8px;right:8px;z-index:5;
+    width:26px;height:26px;border:none;border-radius:4px;
+    background:rgba(38,34,31,0.6);color:#fff;font-size:13px;cursor:pointer;
+    opacity:0;transition:opacity .15s ease;
+  }
+  .funnel-box:hover .funnel-zoom-btn,.funnel-box:focus-within .funnel-zoom-btn{opacity:1;}
+  @media (hover:none){ .funnel-zoom-btn{opacity:1;} }
+  .scroll-cue{
+    position:absolute;left:0;right:0;bottom:0;height:52px;
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;
+    background:linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.95) 78%);
+    pointer-events:none;
+    transition:opacity .25s ease;
+    z-index:4;
+  }
+  .scroll-cue span{
+    background:var(--rose-deep);color:#fff;font-size:11px;font-weight:600;
+    padding:4px 11px;border-radius:10px;letter-spacing:.02em;
+    animation:scrollBob 1.6s ease-in-out infinite;
+  }
+  .funnel-box.scrolled .scroll-cue{opacity:0;}
+  @keyframes scrollBob{0%,100%{transform:translateY(0);}50%{transform:translateY(4px);}}
+
+  /* ---------- Flow line ---------- */
+  .flow-line{
+    text-align:center;
+    background:var(--rose-pale);
+    border:1px solid var(--rose);
+    border-radius:4px;
+    padding:20px 22px;
+    margin:20px 0;
+  }
+  .flow-line-label{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--rose-deep);
+    margin-bottom:10px;
+  }
+  .flow-line-path{
+    font-size:18px;
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:-0.005em;
+  }
+
+  /* ---------- Mini label (non-clickable small tag inside a grid) ---------- */
+  .mini-label{
+    display:block;
+    font-size:12.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--rose-deep);
+    margin-bottom:6px;
+  }
+
+  /* ---------- Small compare grid ---------- */
+  .funnel-example-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin:16px 0;
+  }
+  .funnel-example{
+    background:var(--cream-2);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:14px 16px;
+  }
+  .funnel-example p{
+    font-size:14px;
+    color:var(--ink-soft);
+    margin:0;
+  }
+  @media (max-width:560px){.funnel-example-grid{grid-template-columns:1fr;}}
+
+  /* ---------- Branch tree (constraint / plan-of-attack diagrams) ---------- */
+  .branch-arrow{
+    text-align:center;
+    color:var(--rose-deep);
+    font-size:20px;
+    font-weight:700;
+    line-height:1;
+    margin:6px 0;
+  }
+  .branch-col{
+    background:var(--cream-2);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:16px 18px;
+  }
+  .branch-col .mini-label{margin-bottom:8px;}
+  .branch-col .sub-list{margin-top:0;}
+  .branch-col .sub-list li:last-child{margin-bottom:0;}
+
+  /* ---------- Venn diagram (word-of-mouth bubbles) ---------- */
+  .venn-wrap{max-width:500px;margin:20px auto 4px;}
+  .venn-diagram{position:relative;width:100%;aspect-ratio:640/470;}
+  .venn-diagram svg{position:absolute;inset:0;width:100%;height:100%;}
+  .venn-label{
+    position:absolute;
+    width:128px;
+    text-align:center;
+    transform:translate(-50%,-50%);
+  }
+  .venn-label .mini-label{margin-bottom:4px;font-size:10.5px;white-space:normal;}
+  .venn-label p{margin:0;font-size:13px;color:var(--ink-soft);line-height:1.3;}
+  .venn-label p strong{color:var(--rose-deep);}
+  .venn-sublines{margin-top:5px;}
+  .venn-sublines p{
+    margin:0;
+    font-size:10.5px;
+    font-weight:400;
+    color:var(--ink-soft);
+    line-height:1.4;
+  }
+  .venn-center{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+  }
+  .venn-center-label{
+    background:var(--ink);
+    color:var(--cream);
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.03em;
+    padding:6px 14px;
+    border-radius:20px;
+    white-space:nowrap;
+    box-shadow:0 2px 8px rgba(38,34,31,0.25);
+  }
+  .venn-center-sublines{margin-top:6px;}
+  .venn-center-sublines p{color:var(--ink);white-space:nowrap;}
+
+  /* ---------- Ship tag (future click-to-highlight placeholder) ---------- */
+  .ship-tag-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:20px 0 8px;
+  }
+  .ship-tag{
+    display:inline-block;
+    font-size:13px;
+    font-weight:600;
+    color:var(--rose-deep);
+    background:var(--rose-pale);
+    border-radius:4px;
+    padding:6px 14px;
+  }
+  .venn-list{display:none;}
+  @media (max-width:600px){
+    .venn-diagram{display:none;}
+    .venn-list{display:grid;}
+  }
+
+  /* ---------- Callout box ---------- */
+  .callout{
+    border-left:3px solid var(--rose);
+    background:var(--rose-pale);
+    padding:18px 22px;
+    border-radius:0 4px 4px 0;
+    font-size:15px;
+    margin:20px 0;
+  }
+  .callout strong{color:var(--rose-deep);}
+
+  /* ---------- Status tag (had / recommended) ---------- */
+  .status-tag{
+    display:inline-block;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    padding:2px 8px;
+    border-radius:3px;
+    margin-right:8px;
+  }
+  .status-tag.had{background:var(--cream-2);color:var(--ink-soft);border:1px solid var(--line);}
+  .status-tag.recommended{background:var(--rose-pale);color:var(--rose-deep);border:1px solid var(--rose);}
+
+  /* ---------- Sub-label (mini eyebrow within a num-block) ---------- */
+  .sub-label{
+    font-size:15px;
+    font-weight:700;
+    color:var(--rose-deep);
+    margin:22px 0 8px;
+  }
+  .sub-label:first-child{margin-top:0;}
+
+  /* ---------- Info tooltip ---------- */
+  .info-tip{position:relative;}
+  .info-tip-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    border:1px solid var(--ink-soft);
+    color:var(--ink-soft);
+    background:none;
+    font-size:10px;
+    line-height:1;
+    cursor:pointer;
+    margin-left:5px;
+    vertical-align:middle;
+    padding:0;
+  }
+  .info-tip-content{
+    display:none;
+    position:absolute;
+    left:0;
+    top:24px;
+    width:260px;
+    max-width:70vw;
+    background:var(--ink);
+    color:var(--cream);
+    font-size:13px;
+    font-style:normal;
+    line-height:1.5;
+    padding:10px 12px;
+    border-radius:4px;
+    z-index:20;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+  }
+  .info-tip-content.open{display:block;}
+
+  /* ---------- Quote icon + popup ---------- */
+  .quote-icon-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    border:1px solid var(--rose);
+    background:var(--rose-pale);
+    color:var(--rose-deep);
+    cursor:pointer;
+    margin-left:6px;
+    vertical-align:middle;
+    padding:0;
+    flex-shrink:0;
+  }
+  .quote-icon-btn svg{width:11px;height:11px;display:block;}
+  .quote-icon-btn:hover{background:var(--rose);color:#fff;}
+  #quote-popup-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(38,34,31,0.55);
+    z-index:998;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  #quote-popup-overlay.active{display:flex;}
+  .quote-popup{
+    position:relative;
+    background:var(--cream);
+    border-radius:8px;
+    max-width:480px;
+    width:100%;
+    max-height:70vh;
+    overflow-y:auto;
+    padding:26px 28px;
+    scrollbar-color:var(--rose) var(--cream-2);
+    scrollbar-width:thin;
+  }
+  .quote-popup-close{
+    position:absolute;
+    top:14px;
+    right:14px;
+    width:26px;
+    height:26px;
+    border:none;
+    border-radius:50%;
+    background:var(--cream-2);
+    color:var(--ink-soft);
+    font-size:14px;
+    cursor:pointer;
+  }
+  .quote-popup-title{
+    margin:0 0 16px;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--rose-deep);
+    padding-right:24px;
+  }
+  .quote-popup-body p{
+    font-size:15px;
+    line-height:1.5;
+    color:var(--ink);
+    border-left:2px solid var(--rose);
+    padding-left:14px;
+    margin:0 0 14px;
+  }
+  .quote-popup-body p:last-child{margin-bottom:0;}
+  .quote-popup-body .quote-empty{
+    color:var(--ink-soft);
+    font-style:italic;
+    border-left:none;
+    padding-left:0;
+  }
+
+  /* ---------- Divider dot ---------- */
+  .divider{
+    display:flex;
+    justify-content:center;
+    padding:8px 0;
+  }
+  .divider span{
+    width:5px;height:5px;border-radius:50%;
+    background:var(--rose);
+    margin:0 5px;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    padding:56px 0 90px;
+    text-align:center;
+  }
+  footer .sig{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    color:var(--ink-soft);
+  }
+
+  /* ---------- Build note (temporary, remove before final) ---------- */
+  .build-note{
+    background:#fff8e8;
+    border:1px dashed #d8c48a;
+    border-radius:4px;
+    padding:14px 18px;
+    font-size:13px;
+    color:#7a6a3a;
+    margin:0 0 28px;
+  }
+
+  @media (max-width:560px){
+    .masthead{padding:64px 0 44px;}
+    section{padding:44px 0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="case-topnav">
+  <a href="../index.html">&larr; Back to Portfolio</a>
+  <a class="case-topnav-next" href="../case3/case-study-3-phd-research.html">Next: Case 03 &mdash; PhD Research &rarr;</a>
+</div>
+
+<div class="toc-topbar">
+  <nav>
+    <a class="toc-link" data-target="sec-ask" href="#sec-ask">Ask</a>
+    <span class="toc-arrow">&rarr;</span>
+    <a class="toc-link" data-target="sec-recruitment" href="#sec-recruitment">Recruitment</a>
+    <span class="toc-arrow">&rarr;</span>
+    <a class="toc-link" data-target="sec-interviews" href="#sec-interviews">Interviews</a>
+    <span class="toc-arrow">&rarr;</span>
+    <a class="toc-link" data-target="sec-deliverable" href="#sec-deliverable">The Deliverable</a>
+    <span class="toc-arrow">&rarr;</span>
+    <a class="toc-link" data-target="sec-recommendations" href="#sec-recommendations">Strategic Recommendations</a>
+    <span class="toc-arrow">&rarr;</span>
+    <a class="toc-link" data-target="sec-final-docs" href="#sec-final-docs">Final Docs</a>
+    <span class="toc-arrow">&rarr;</span>
+    <a class="toc-link" data-target="sec-what-shipped" href="#sec-what-shipped">What Shipped</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="eyebrow">Case Study 02</div>
+    <h1 class="title">What Started as Landing Page Testing Ended Up Shaping a Brand</h1>
+    <p class="subtitle">How interviews meant to test landing page variations ended up reshaping product roadmap, marketing strategy, and brand positioning instead.</p>
+    <div class="meta-row">
+      <div><span>Role</span>Associate Product Manager (solo)</div>
+      <div><span>Company</span>Panda Mobile · Moxee Technologies</div>
+      <div><span>Timeline</span>&lt; 2 months, part-time</div>
+      <div><span>Team</span>6 product/eng · 4 marketing</div>
+    </div>
+  </header>
+
+  <!-- THE ASK -->
+  <section id="sec-ask">
+    <div class="section-label">The Ask</div>
+    <h2>A New Target Audience. I Offered to Test the Landing Page With Users.</h2>
+    <p class="lede">Panda Mobile is a new online mobile carrier, powered by the T-Mobile network. Marketing was testing new brand elements (color themes, a mascot, slogan options) on the landing page for the new audience.</p>
+    <p><strong style="color:var(--rose-deep);">&rarr;</strong> <em style="color:var(--ink-soft);">I offered to interview target users on the variations.</em></p>
+  </section>
+
+  <!-- RECRUITMENT -->
+  <section id="sec-recruitment">
+    <div class="section-label">Recruitment</div>
+    <h2>From 1 Contact to 55 Sign-Ups Across 10+ States</h2>
+    <p class="lede">Survey results hinted the segment was deal-motivated, so I designed a referral incentive: $15 for a 1-hour interview, plus $10 per successful referral, up to 5.</p>
+
+    <div class="stat-block" style="padding-bottom:0;">
+      <div class="stat-num">55</div>
+      <div class="stat-label" style="margin-top:6px;">Sign-ups for interviews, within 3 days</div>
+      <p style="font-size:14px;font-style:italic;color:var(--ink-soft);margin:6px 0 0;">From 1 person I knew in Indiana, our network grew to span 10+ states &amp; 3 countries!</p>
+    </div>
+    <p style="text-align:center;font-size:14px;color:var(--ink-soft);margin-top:10px;">Already a sign of what this audience valued: word-of-mouth, and an incentive to spread it.</p>
+  </section>
+
+  <!-- INTERVIEWS: FIRST 8, PIVOT, NEXT 15 -->
+  <section id="sec-interviews">
+    <div class="section-label">Interviews</div>
+    <h2>8 Interviews, Then a Pivot, Then 15 More</h2>
+
+    <div class="num-block" style="margin-top:8px;">
+      <div class="num-digit">01</div>
+      <div class="num-content">
+        <div class="num-title">The First 8 Interviews</div>
+        <p>Each interview covered background and carrier switching history first, then spent most of its time on first impressions of the landing page and panda mascot variations.</p>
+
+        <div class="img-grid" style="grid-template-columns:0.85fr 1.15fr;">
+          <div>
+            <div class="funnel-box is-scroll" style="aspect-ratio:auto;height:340px;">
+              <img src="interview-guide-combined.png" alt="Interview questions guide">
+              <button class="funnel-zoom-btn" type="button" aria-label="View full size" onclick="openLightbox(this.previousElementSibling)">&#9974;</button>
+              <div class="scroll-cue"><span>Scroll &#8595;</span></div>
+            </div>
+            <div class="ba-caption">Interview questions guide</div>
+          </div>
+          <div>
+            <div class="funnel-box is-scroll" style="aspect-ratio:auto;height:340px;">
+              <img src="3.png" alt="Two of the landing page and panda character variations tested">
+              <button class="funnel-zoom-btn" type="button" aria-label="View full size" onclick="openLightbox(this.previousElementSibling)">&#9974;</button>
+              <div class="scroll-cue"><span>Scroll &#8595;</span></div>
+            </div>
+            <div class="ba-caption">2 of the landing page and character variations tested</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="num-block">
+      <div class="num-digit">02</div>
+      <div class="num-content">
+        <div class="num-title">The Pivot</div>
+
+        <div class="sub-label">Early Insights Were Already Contradicting Survey Data</div>
+        <p>Example: survey data suggested the audience wanted family plans, a major planned engineering investment. Interviews said otherwise: people found them a hassle, staying mainly for the price or word-of-mouth.</p>
+        <p><strong style="color:var(--rose-deep);">&rarr;</strong> <em style="color:var(--ink-soft);">I proposed swapping the landing page questions for price/feature exploration.</em></p>
+
+        <div class="sub-label">One Executive Doubted I Was Equipped to Run This Alone</div>
+        <p>He'd come from T-Mobile, a company with a well-resourced research team, and didn't think one early-career researcher was equipped to collect the right research alone.</p>
+
+        <div class="sub-label">I Looped In Every Stakeholder Directly</div>
+        <ul class="plain-list">
+          <li>1:1 with the executive: walked through my plan, agreed the presentation would stay primarily insights, with any recommendations previewed to him first.</li>
+          <li>1:1 with every other stakeholder too, building their questions into the plan.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="num-block">
+      <div class="num-digit">03</div>
+      <div class="num-content">
+        <div class="num-title">The Next 15 Interviews</div>
+        <p>I went more in depth on carrier history and switching motivations, and added 2 exercises: a mobile plan feature ranking and a pricing/feature sensitivity analysis for plans.</p>
+
+        <div class="funnel-box is-scroll" style="aspect-ratio:auto;height:340px;max-width:520px;margin:0 auto;">
+          <img src="feature-price-combined.png" alt="Feature and price tradeoff guide used in the last 15 interviews">
+          <button class="funnel-zoom-btn" type="button" aria-label="View full size" onclick="openLightbox(this.previousElementSibling)">&#9974;</button>
+          <div class="scroll-cue"><span>Scroll &#8595;</span></div>
+        </div>
+        <div class="ba-caption" style="text-align:center;">Feature and price tradeoff guide</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE DELIVERABLE -->
+  <section id="sec-deliverable">
+    <div class="section-label">The Deliverable</div>
+    <h2>A Company-Wide Presentation: Mostly Insights, Strategy at the End</h2>
+    <p class="lede">Thematic analysis surfaced 21 quote-supported insights on challenges, community, carrier history &amp; priorities, and plan/feature sensitivity.</p>
+    <p><strong style="color:var(--rose-deep);">&rarr;</strong> <em style="color:var(--ink-soft);">Insight-informed strategy came last and stayed intentionally low-effort, sized to the team's engineering bandwidth and framed to earn stakeholder buy-in rather than dictate it.</em></p>
+  </section>
+
+  <!-- STRATEGIC RECOMMENDATIONS -->
+  <section id="sec-recommendations">
+    <div class="section-label">Strategic Recommendations</div>
+    <h2>Strategy Sized to What We Already Had</h2>
+
+    <div class="num-block" style="margin-top:8px;">
+      <div class="num-digit">01</div>
+      <div class="num-content">
+        <div class="num-title">The Constraints: Every Recommendation Had to Cost Almost Nothing</div>
+        <div class="funnel-example-grid">
+          <div class="funnel-example">
+            <span class="mini-label">Constraint 1</span>
+            <p>Limited engineering bandwidth, pulled across 5 mobile brands</p>
+          </div>
+          <div class="funnel-example">
+            <span class="mini-label">Constraint 2</span>
+            <p>Stakeholder caution about one researcher's influence on strategy</p>
+          </div>
+        </div>
+        <div class="branch-arrow">&darr;</div>
+        <div class="flow-line">
+          <div class="flow-line-label">Therefore</div>
+          <div class="flow-line-path" style="font-size:16px;">Every recommendation had to reposition something the team already had, not ask for new investment</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="num-block">
+      <div class="num-digit">02</div>
+      <div class="num-content">
+        <div class="num-title">The Core Insight: Target Users Will Only Switch to Panda Mobile If&hellip;</div>
+        <div class="funnel-example-grid">
+          <div class="funnel-example">
+            <span class="mini-label">1. It Reaches Them Through Word-of-Mouth</span>
+            <p>Carrier choice, especially the first one, primarily comes from inside their own network<span class="info-tip"><button class="info-tip-btn" type="button" aria-label="More info" onclick="toggleTip(this)">?</button><span class="info-tip-content">Each student's carrier options, and sense of what counts as "cheap" or "reliable," are shaped by the specific network of friends, classmates, and community groups (often CSSA/WeChat-based) they're plugged into, not by independent research or advertising.</span></span><button class="quote-icon-btn" type="button" aria-label="See supporting quotes" onclick="openQuotePopup('word-of-mouth-bubble','Word-of-mouth bubble')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg></button></p>
+          </div>
+          <div class="funnel-example">
+            <span class="mini-label">2. The Price Is a "Deal"</span>
+            <p>Much lower, or comparable and stacked with a discount and value props<button class="quote-icon-btn" type="button" aria-label="See supporting quotes" onclick="openQuotePopup('deal-motivated','Deal &amp; discount motivation')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg></button></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="num-block">
+      <div class="num-digit">03</div>
+      <div class="num-content">
+        <div class="num-title">The Three Word-of-Mouth Bubbles</div>
+
+        <div class="venn-wrap">
+          <div class="venn-diagram">
+            <svg viewBox="0 0 640 470" aria-hidden="true">
+              <circle cx="320" cy="165" r="155" fill="var(--rose)" opacity="0.35" style="mix-blend-mode:multiply;"/>
+              <circle cx="210" cy="305" r="155" fill="var(--rose)" opacity="0.35" style="mix-blend-mode:multiply;"/>
+              <circle cx="430" cy="305" r="155" fill="var(--rose)" opacity="0.35" style="mix-blend-mode:multiply;"/>
+              <circle cx="320" cy="165" r="155" fill="none" stroke="var(--rose-deep)" stroke-width="1.5"/>
+              <circle cx="210" cy="305" r="155" fill="none" stroke="var(--rose-deep)" stroke-width="1.5"/>
+              <circle cx="430" cy="305" r="155" fill="none" stroke="var(--rose-deep)" stroke-width="1.5"/>
+            </svg>
+            <div class="venn-label" style="left:50%;top:23%;">
+              <span class="mini-label">Big Wireless<br>(e.g. T-Mobile)</span>
+              <p><strong>Family plan discount</strong></p>
+              <div class="venn-sublines">
+                <p>+ Strong trust</p>
+                <p>- Family plan = hassle</p>
+              </div>
+            </div>
+            <div class="venn-label" style="left:25%;top:76%;">
+              <span class="mini-label">Chinese Carriers<br>(e.g. ENC)</span>
+              <p><strong>Massive first-year discount</strong></p>
+              <div class="venn-sublines">
+                <p>+ Chinese features</p>
+                <p>- Discount shock after year 1</p>
+              </div>
+            </div>
+            <div class="venn-label" style="left:75%;top:76%;">
+              <span class="mini-label">Budget Carriers<br>(e.g. Mint Mobile)</span>
+              <p><strong>Low price</strong></p>
+              <div class="venn-sublines">
+                <p>+ Low price &amp; discounts</p>
+                <p>- Requires upfront payments</p>
+              </div>
+            </div>
+            <div class="venn-center" style="left:50%;top:56%;">
+              <div class="venn-center-label">Panda</div>
+              <div class="venn-sublines venn-center-sublines">
+                <p>+ Chinese features</p>
+                <p>+ Plan flexibility</p>
+                <p>+ No family plan</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="venn-list funnel-example-grid" style="grid-template-columns:1fr;">
+          <div class="funnel-example">
+            <span class="mini-label">Chinese Carriers (e.g. ENC)</span>
+            <p><strong>Massive first-year discount</strong></p>
+          </div>
+          <div class="funnel-example">
+            <span class="mini-label">Big Wireless (e.g. T-Mobile)</span>
+            <p><strong>Family plan discount</strong></p>
+          </div>
+          <div class="funnel-example">
+            <span class="mini-label">Budget Carriers (e.g. Mint Mobile)</span>
+            <p><strong>Low price</strong></p>
+          </div>
+        </div>
+        <p style="text-align:center;font-size:14px;color:var(--ink-soft);margin-top:8px;">From the interviews: "low price" was relative, it depended on each user's own word-of-mouth network. I identified three core ones.</p>
+      </div>
+    </div>
+
+    <div class="num-block">
+      <div class="num-digit">04</div>
+      <div class="num-content">
+        <div class="num-title">Strategic Choice: Which Word-of-Mouth Bubble Should We Target?</div>
+        <p>Stakeholders needed prices that were sustainable for a startup, which ruled out competing with ENC or Mint Mobile on price and left T-Mobile as the bubble to win.</p>
+        <div class="flow-line">
+          <div class="flow-line-label">The bubble we could win</div>
+          <div class="flow-line-path">Big Wireless family plan users</div>
+        </div>
+        <div class="branch-arrow">&darr;</div>
+        <div class="funnel-example-grid" style="grid-template-columns:repeat(3,1fr);">
+          <div class="funnel-example">
+            <span class="mini-label">Sustainable Price</span>
+            <p>Family plan price, $35/mo, is one we can sustainably compete against</p>
+          </div>
+          <div class="funnel-example">
+            <span class="mini-label">Already Dissatisfied</span>
+            <p>The family plan hassle<button class="quote-icon-btn" type="button" aria-label="See supporting quotes" onclick="openQuotePopup('family-plan-hassle','Family plan hassle')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg></button></p>
+          </div>
+          <div class="funnel-example">
+            <span class="mini-label">Chinese-Community Edge</span>
+            <p>Features Big Wireless can't match<button class="quote-icon-btn" type="button" aria-label="See supporting quotes" onclick="openQuotePopup('chinese-community-edge','Chinese-community edge')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg></button></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="num-block">
+      <div class="num-digit">05</div>
+      <div class="num-content">
+        <div class="num-title">Plan of Attack: Here's How We Use What We Already Have to Compete With T-Mobile</div>
+
+        <div class="flow-line" style="max-width:300px;margin:0 auto;">
+          <div class="flow-line-label">Base</div>
+          <div class="flow-line-path">Product</div>
+        </div>
+        <div class="branch-arrow">&darr;</div>
+        <div class="img-grid" style="grid-template-columns:1fr 1fr;align-items:start;">
+          <div class="branch-col">
+            <span class="mini-label">Comparable Price Without the Family Plan</span>
+            <p style="font-size:15px;font-weight:600;color:var(--ink);margin:0 0 10px;">$35/mo individual unlimited plan option</p>
+            <ul class="sub-list">
+              <li>Target users didn't want to be on family plans in the first place<button class="quote-icon-btn" type="button" aria-label="See supporting quotes" onclick="openQuotePopup('no-family-plan','No family plan')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg></button></li>
+              <li>Panda already had individual plans, and could cut <strong>the planned family-plan feature that would be a major engineering investment</strong></li>
+            </ul>
+          </div>
+          <div class="branch-col">
+            <span class="mini-label">Chinese-Community Value Props</span>
+            <ul class="sub-list">
+              <li><span class="status-tag recommended">Recommended</span>Implement a "Pause your plan" feature: ranked #1 in interviews<button class="quote-icon-btn" type="button" aria-label="See supporting quotes" onclick="openQuotePopup('pause-your-plan','Pause your plan')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg></button> and would be a ~2-day build, <strong>vs. the planned food delivery partnership ranked #16 that would be a massive investment.</strong><button class="quote-icon-btn" type="button" aria-label="See supporting quotes" onclick="openQuotePopup('food-delivery-partnership','Food delivery partnership')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg></button></li>
+              <li><span class="status-tag recommended">Recommended</span>Limit unlimited international data, ranked #15 in interviews since this audience primarily calls home over WeChat on WiFi<button class="quote-icon-btn" type="button" aria-label="See supporting quotes" onclick="openQuotePopup('limit-international-data','Limit international data')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg></button>, and invest in a dual number instead, ranked #7.</li>
+              <li><span class="status-tag recommended">Recommended</span>Mandarin-speaking support, already in place and ranked #13 in interviews<button class="quote-icon-btn" type="button" aria-label="See supporting quotes" onclick="openQuotePopup('mandarin-support','Mandarin-speaking support')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg></button>, but 24/7 support ranked #3<button class="quote-icon-btn" type="button" aria-label="See supporting quotes" onclick="openQuotePopup('24-7-support','24/7 support')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg></button>, room to grow.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="branch-arrow" style="margin-top:16px;">&darr;</div>
+        <div class="flow-line" style="max-width:300px;margin:0 auto;">
+          <div class="flow-line-label">Then</div>
+          <div class="flow-line-path">Marketing</div>
+        </div>
+        <div class="branch-arrow">&darr;</div>
+        <div class="img-grid" style="grid-template-columns:1fr 1fr;align-items:start;">
+          <div class="branch-col">
+            <span class="mini-label">Incentivization</span>
+            <ul class="sub-list">
+              <li>$5 student discount<button class="quote-icon-btn" type="button" aria-label="See supporting quotes" onclick="openQuotePopup('student-discount','Student discount')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg></button></li>
+              <li>"Unlimited Savings," an uncapped referral incentive</li>
+            </ul>
+          </div>
+          <div class="branch-col">
+            <span class="mini-label">Word-of-Mouth Entry Points</span>
+            <ul class="sub-list">
+              <li>CSSA and community presence, direct entry into the audience's own word-of-mouth network<button class="quote-icon-btn" type="button" aria-label="See supporting quotes" onclick="openQuotePopup('cssa-community','CSSA and community presence')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg></button></li>
+              <li>"Bye Bye Family Plan" campaign, aimed squarely at the bubble we chose to win</li>
+              <li>The referral incentive above would double as a word-of-mouth driver, too</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="branch-arrow" style="margin-top:16px;">&darr;</div>
+        <div class="flow-line" style="max-width:300px;margin:0 auto;">
+          <div class="flow-line-label">Then</div>
+          <div class="flow-line-path">Brand</div>
+        </div>
+        <div class="branch-arrow">&darr;</div>
+        <p style="text-align:center;font-size:14px;color:var(--ink-soft);margin:-4px 0 14px;">I coined the slogan <strong>"The mobile carrier that travels with you,"</strong> still Panda's tagline today.</p>
+        <div class="branch-col" style="max-width:520px;margin:0 auto;">
+          <span class="mini-label">Panda as a Support System (for challenges international Chinese students face)<button class="quote-icon-btn" type="button" aria-label="See supporting quotes" onclick="openQuotePopup('panda-support-system','Panda as a support system')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg></button></span>
+          <ul class="sub-list">
+            <li>A resource page for challenges Chinese students face moving to the U.S., still reflected on Panda's blog</li>
+            <li>Practical resources: housing/real estate agent guides, connecting students to Facebook roommate groups (FB is banned in China)</li>
+            <li>Community events and workshops, like practicing English and networking</li>
+            <li>Giveaways matched to real challenges, like rideshare gift cards for students without cars</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL DOCS -->
+  <section id="sec-final-docs">
+    <div class="section-label">Final Docs</div>
+    <h2>What I Handed Off</h2>
+    <p class="lede">The last things I delivered before leaving: the campaign posters, designed in Canva, and a summary plan of action for the VP of Program Management.</p>
+
+    <div class="img-grid" style="grid-template-columns:1fr 1fr 1fr;max-width:620px;margin-left:auto;margin-right:auto;">
+      <div>
+        <div class="funnel-box" style="aspect-ratio:0.77;">
+          <img src="poster-english.png" alt="Bye Bye Family Plan campaign poster, designed by Sofia in Canva">
+          <button class="funnel-zoom-btn" type="button" aria-label="View full size" onclick="openLightbox(this.previousElementSibling)">&#9974;</button>
+        </div>
+        <div class="ba-caption" style="text-align:center;">"Bye Bye Family Plan" poster, designed in Canva, campaigned at school events after I left</div>
+      </div>
+      <div>
+        <div class="funnel-box" style="aspect-ratio:0.77;">
+          <img src="poster-chinese.png" alt="Chinese-language version of the campaign poster, designed by Sofia in Canva">
+          <button class="funnel-zoom-btn" type="button" aria-label="View full size" onclick="openLightbox(this.previousElementSibling)">&#9974;</button>
+        </div>
+        <div class="ba-caption" style="text-align:center;">Chinese-language version, also designed in Canva</div>
+      </div>
+      <div>
+        <div class="funnel-box is-scroll" style="aspect-ratio:0.77;">
+          <img src="panda-plan-combined.png" alt="The Panda Plan, a casual working document Sofia put together at the VP of Program Management's request">
+          <button class="funnel-zoom-btn" type="button" aria-label="View full size" onclick="openLightbox(this.previousElementSibling)">&#9974;</button>
+          <div class="scroll-cue"><span>Scroll &#8595;</span></div>
+        </div>
+        <div class="ba-caption" style="text-align:center;">The Panda Plan &mdash; a casual doc I put together at the VP of Program Management's request, not a formal deliverable</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT SHIPPED -->
+  <section id="sec-what-shipped">
+    <div class="section-label">What Shipped</div>
+    <h2>My Recommendations Went Live</h2>
+    <p class="lede">I left right after the presentation to finish my PhD. Most of the recommendations went live. My presentation is still shared with new hires.</p>
+
+    <div class="ship-tag-row">
+      <span class="ship-tag">$35/mo comparable unlimited plan</span>
+      <span class="ship-tag">No family plan, individual plans ("Bye Bye, Family Plan")</span>
+      <span class="ship-tag">Student discount</span>
+      <span class="ship-tag">Uncapped "Unlimited Savings" referral</span>
+      <span class="ship-tag">Pause your plan</span>
+      <span class="ship-tag">Mandarin &amp; bilingual support</span>
+      <span class="ship-tag">Support for challenges: blog, housing &amp; banking help</span>
+      <span class="ship-tag">"The mobile carrier that travels with you"</span>
+    </div>
+
+    <div class="img-grid" style="grid-template-columns:1fr 1fr;margin-top:20px;">
+      <div>
+        <div class="funnel-box is-scroll" style="aspect-ratio:auto;height:400px;">
+          <img src="panda-1-year.png" alt="Panda Mobile's landing page, 1 year after Sofia's presentation">
+          <button class="funnel-zoom-btn" type="button" aria-label="View full size" onclick="openLightbox(this.previousElementSibling)">&#9974;</button>
+          <div class="scroll-cue"><span>Scroll &#8595;</span></div>
+        </div>
+        <div class="ba-caption" style="text-align:center;">1 year after my presentation</div>
+      </div>
+      <div>
+        <div class="funnel-box is-scroll" style="aspect-ratio:auto;height:400px;">
+          <img src="panda-2-years.png" alt="Panda Mobile's landing page, 2 years after Sofia's presentation">
+          <button class="funnel-zoom-btn" type="button" aria-label="View full size" onclick="openLightbox(this.previousElementSibling)">&#9974;</button>
+          <div class="scroll-cue"><span>Scroll &#8595;</span></div>
+        </div>
+        <div class="ba-caption" style="text-align:center;">2 years after my presentation</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span></span><span></span><span></span></div>
+
+  <footer>
+    <div class="sig">Sofia Valdez</div>
+  </footer>
+
+  <div class="case-bottomnav">
+    <a class="back-link" href="../index.html">&larr; Back to Portfolio</a>
+    <a class="next-link" href="../case3/case-study-3-phd-research.html">Next Case: PhD Research &rarr;</a>
+  </div>
+
+</div>
+
+<div id="lightbox-overlay" onclick="closeLightbox()">
+  <button id="lightbox-prev" class="lightbox-nav-btn" type="button" aria-label="Previous page" onclick="lightboxPrev(event)">&#8249;</button>
+  <img id="lightbox-img" src="" alt="" onclick="toggleLightboxZoom(event)">
+  <button id="lightbox-next" class="lightbox-nav-btn" type="button" aria-label="Next page" onclick="lightboxNext(event)">&#8250;</button>
+  <div id="lightbox-counter"></div>
+</div>
+
+<div id="quote-popup-overlay" onclick="if(event.target===this)closeQuotePopup()">
+  <div class="quote-popup">
+    <button class="quote-popup-close" type="button" aria-label="Close" onclick="closeQuotePopup()">&#10005;</button>
+    <div class="quote-popup-title" id="quote-popup-title">Quotes</div>
+    <div class="quote-popup-body" id="quote-popup-body"></div>
+  </div>
+</div>
+
+<script>
+  var galleryImages = [];
+  var galleryIndex = 0;
+
+  function openLightbox(imgEl){
+    openGallery([{src: imgEl.src, alt: imgEl.alt}], 0);
+  }
+  function openLightboxGallery(srcs, alts, startIndex){
+    var images = srcs.map(function(s, i){ return {src: s, alt: (alts && alts[i]) || ''}; });
+    openGallery(images, startIndex || 0);
+  }
+  function openGallery(images, index){
+    galleryImages = images;
+    galleryIndex = index;
+    renderGalleryImage();
+    document.getElementById('lightbox-overlay').classList.add('active');
+  }
+  function toggleLightboxZoom(e){
+    e.stopPropagation();
+    document.getElementById('lightbox-overlay').classList.toggle('zoomed');
+  }
+  function renderGalleryImage(){
+    document.getElementById('lightbox-overlay').classList.remove('zoomed');
+    var img = document.getElementById('lightbox-img');
+    img.src = galleryImages[galleryIndex].src;
+    img.alt = galleryImages[galleryIndex].alt;
+    var multi = galleryImages.length > 1;
+    document.getElementById('lightbox-prev').style.display = multi ? 'flex' : 'none';
+    document.getElementById('lightbox-next').style.display = multi ? 'flex' : 'none';
+    var counter = document.getElementById('lightbox-counter');
+    counter.style.display = multi ? 'block' : 'none';
+    counter.textContent = multi ? (galleryIndex + 1) + ' / ' + galleryImages.length : '';
+  }
+  function lightboxPrev(e){
+    e.stopPropagation();
+    galleryIndex = (galleryIndex - 1 + galleryImages.length) % galleryImages.length;
+    renderGalleryImage();
+  }
+  function lightboxNext(e){
+    e.stopPropagation();
+    galleryIndex = (galleryIndex + 1) % galleryImages.length;
+    renderGalleryImage();
+  }
+  function closeLightbox(){
+    document.getElementById('lightbox-overlay').classList.remove('active');
+    document.getElementById('lightbox-overlay').classList.remove('zoomed');
+  }
+  document.addEventListener('keydown', function(e){
+    if(!document.getElementById('lightbox-overlay').classList.contains('active')) return;
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowLeft' && galleryImages.length > 1) lightboxPrev(e);
+    if(e.key === 'ArrowRight' && galleryImages.length > 1) lightboxNext(e);
+  });
+
+  /* ---------- Info tooltip ---------- */
+  function toggleTip(btn){
+    var content = btn.nextElementSibling;
+    var isOpen = content.classList.contains('open');
+    document.querySelectorAll('.info-tip-content.open').forEach(function(el){ el.classList.remove('open'); });
+    if(!isOpen) content.classList.add('open');
+  }
+  document.addEventListener('click', function(e){
+    if(!e.target.closest || !e.target.closest('.info-tip')){
+      document.querySelectorAll('.info-tip-content.open').forEach(function(el){ el.classList.remove('open'); });
+    }
+  });
+
+  /* ---------- Quote icon + popup ---------- */
+  var QUOTES_DATA = {
+    'deal-motivated': [],
+    'word-of-mouth-bubble': [],
+    'family-plan-hassle': [],
+    'no-family-plan': [],
+    'brand-positioning': [],
+    'chinese-community-edge': [],
+    'pause-your-plan': [],
+    'food-delivery-partnership': [],
+    'limit-international-data': [],
+    'panda-support-system': [],
+    'student-discount': [],
+    'cssa-community': [],
+    'mandarin-support': [],
+    '24-7-support': []
+  };
+  function openQuotePopup(key, label){
+    var quotes = QUOTES_DATA[key] || [];
+    document.getElementById('quote-popup-title').textContent = label || 'Quotes';
+    var body = document.getElementById('quote-popup-body');
+    if(quotes.length){
+      body.innerHTML = quotes.map(function(q){ return '<p>' + q + '</p>'; }).join('');
+    } else {
+      body.innerHTML = '<p class="quote-empty">Quotes coming soon.</p>';
+    }
+    document.getElementById('quote-popup-overlay').classList.add('active');
+  }
+  function closeQuotePopup(){
+    document.getElementById('quote-popup-overlay').classList.remove('active');
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && document.getElementById('quote-popup-overlay').classList.contains('active')){
+      closeQuotePopup();
+    }
+  });
+
+  /* ---------- Scroll affordance fade ---------- */
+  document.querySelectorAll('.funnel-box.is-scroll').forEach(function(box){
+    box.addEventListener('scroll', function(){
+      box.classList.toggle('scrolled', box.scrollTop > 16);
+    });
+  });
+
+  /* ---------- TOC scrollspy ---------- */
+  (function(){
+    var links = document.querySelectorAll('.toc-link');
+    if(!links.length) return;
+    var sections = Array.prototype.map.call(links, function(link){
+      return document.getElementById(link.getAttribute('data-target'));
+    }).filter(Boolean);
+
+    function setActive(id){
+      links.forEach(function(link){
+        var isActive = link.getAttribute('data-target') === id;
+        link.classList.toggle('active', isActive);
+        if(isActive){
+          link.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+        }
+      });
+    }
+
+    if('IntersectionObserver' in window){
+      var observer = new IntersectionObserver(function(entries){
+        var visible = entries.filter(function(e){ return e.isIntersecting; });
+        if(visible.length){
+          visible.sort(function(a, b){ return a.boundingClientRect.top - b.boundingClientRect.top; });
+          setActive(visible[0].target.id);
+        }
+      }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+      sections.forEach(function(sec){ observer.observe(sec); });
+    }
+  })();
+</script>
+
+</body>
+</html>
